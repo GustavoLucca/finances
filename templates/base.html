@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Personal Finance Dashboard{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+    <script src="{{ url_for('static', filename='plotly.min.js') }}"></script>
+    <style>
+        :root {
+            --bs-body-bg: #f8fafc;
+            --bs-body-color: #1e293b;
+            --card-border: #e2e8f0;
+            --primary-accent: #0f172a;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bs-body-bg);
+            color: var(--bs-body-color);
+        }
+        .navbar-brand {
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        .metric-card {
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            background: #ffffff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .metric-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+        .metric-label {
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            font-weight: 600;
+        }
+        .metric-value {
+            font-size: 1.85rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-top: 4px;
+        }
+        .card-custom {
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            background: #ffffff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+        .card-custom .card-header {
+            background-color: #ffffff;
+            border-bottom: 1px solid var(--card-border);
+            font-weight: 600;
+            padding: 1rem 1.25rem;
+        }
+        .badge-currency {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.35em 0.65em;
+            border-radius: 6px;
+        }
+        .table > :not(caption) > * > * {
+            padding: 0.75rem 1rem;
+            vertical-align: middle;
+        }
+        .text-income {
+            color: #16a34a !important;
+            font-weight: 600;
+        }
+        .text-expense {
+            color: #dc2626 !important;
+            font-weight: 600;
+        }
+        .fx-pill {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+            cursor: pointer;
+            border-radius: 20px;
+            padding: 4px 14px;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+        .fx-pill:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+        .progress-thin {
+            height: 8px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark py-2 px-3 sticky-top shadow-sm">
+        <div class="container-fluid">
+            <span class="navbar-brand d-flex align-items-center gap-2">
+                <span style="font-size: 1.4rem;">🏛️</span>
+                <span>Odysseus Finance</span>
+                <span class="badge bg-secondary text-light ms-2" style="font-size: 0.7rem; font-weight: normal;">Local & Offline</span>
+            </span>
+            <div class="d-flex align-items-center gap-3">
+                <button class="fx-pill" data-bs-toggle="modal" data-bs-target="#settingsModal" title="Click to edit FX rate">
+                    <span>💱 1 EUR = <strong id="navFxRate">1.0800</strong> USD</span>
+                    <span style="font-size: 0.75rem;">✎</span>
+                </button>
+                <button class="btn btn-sm btn-outline-light d-flex align-items-center gap-1" data-bs-toggle="modal" data-bs-target="#settingsModal">
+                    ⚙️ Settings
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="py-4">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="text-center text-muted py-4 small border-top bg-white mt-5">
+        <div class="container">
+            Odysseus Finance Dashboard &bull; 100% Offline SQLite Storage &bull; Display in USD
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='bootstrap.bundle.min.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
